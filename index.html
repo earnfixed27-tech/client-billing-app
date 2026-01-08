@@ -3,41 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Elite Cloud Billing | Tushar Dev</title>
+    <title>Elite Billing Pro | Tushar Dev</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        .ios-fix { -webkit-overflow-scrolling: touch; }
-        ::-webkit-scrollbar { display: none; }
-    </style>
 </head>
-<body class="bg-slate-50 font-sans select-none overflow-x-hidden text-slate-900 ios-fix">
-
-    <div id="installBar" class="hidden fixed bottom-32 left-8 right-8 bg-blue-600 text-white p-5 rounded-[30px] z-[9999] shadow-2xl flex justify-between items-center border-2 border-white/20">
-        <div class="flex items-center gap-3">
-            <span class="text-2xl">📲</span>
-            <p class="text-[10px] font-black uppercase tracking-widest">Install App</p>
-        </div>
-        <button onclick="triggerInstall()" class="bg-white text-blue-600 px-6 py-2 rounded-xl font-black text-[10px]">INSTALL</button>
-    </div>
+<body class="bg-slate-50 font-sans select-none overflow-x-hidden text-slate-900">
 
     <div id="loginPage" class="fixed inset-0 z-[2000] bg-white flex items-center justify-center p-8">
         <div class="w-full max-w-sm text-center">
-            <h1 class="text-4xl font-black mb-10 italic text-slate-900 underline decoration-blue-500 underline-offset-8">CLOUD BILLING</h1>
+            <h1 class="text-4xl font-black mb-10 tracking-tighter italic text-slate-900 underline decoration-blue-600 underline-offset-8 uppercase">Cloud Billing</h1>
             <input id="uId" placeholder="Shop ID" class="w-full p-5 mb-4 bg-slate-50 rounded-[25px] border outline-none font-bold">
             <input id="uPass" type="password" placeholder="Password" class="w-full p-5 mb-10 bg-slate-50 rounded-[25px] border outline-none font-bold">
-            <button onclick="doLogin()" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black text-lg">SIGN IN</button>
+            <button onclick="doLogin()" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black text-lg shadow-xl active:scale-95 transition">SIGN IN</button>
         </div>
     </div>
 
-    <div id="mainApp" class="hidden min-h-screen pb-40">
+    <div id="mainApp" class="hidden min-h-screen">
         <header class="bg-white p-6 shadow-sm sticky top-0 z-50 pt-10 border-b">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-4">
-                    <img id="sideLogo" src="" class="w-10 h-10 rounded-xl object-contain border hidden shadow-sm">
+                    <img id="sideLogo" src="" class="w-10 h-10 rounded-xl object-contain border hidden">
                     <h1 id="headerShop" class="text-lg font-black uppercase italic tracking-tighter"></h1>
                 </div>
                 <button onclick="doLogout()" class="bg-red-50 text-red-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase">Logout</button>
@@ -48,34 +35,43 @@
             </div>
         </header>
 
-        <div id="billingPage" class="p-4 space-y-6">
+        <div id="billingPage" class="p-4 space-y-6 pb-40">
             <div class="bg-white p-6 rounded-[35px] border shadow-sm space-y-4">
-                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-medium">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic underline decoration-blue-500 underline-offset-4">Customer Details</h3>
+                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
                 <input id="cP" type="number" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                <input id="cA" placeholder="Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                <input id="dBrand" placeholder="Brand Name" class="w-full p-4 bg-slate-50 rounded-2xl border font-bold uppercase">
-                <input id="dModel" placeholder="Model Name" class="w-full p-4 bg-slate-50 rounded-2xl border font-bold">
-                <input id="imei" placeholder="IMEI / Serial" class="w-full p-4 bg-slate-50 rounded-2xl border">
+                <input id="cA" placeholder="Full Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic">Device Details (Manual)</h3>
+                <input id="dBrand" placeholder="Enter Brand (e.g. Vivo)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold uppercase">
+                <input id="dModel" placeholder="Enter Model (e.g. V29)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
+                <input id="imei" placeholder="IMEI / Serial No." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic tracking-widest">EMI Calculator</h3>
                 <div class="grid grid-cols-2 gap-3">
-                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Price" class="p-4 bg-slate-50 rounded-2xl border font-black text-blue-600 text-center">
+                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Total Price" class="p-4 bg-slate-50 rounded-2xl border font-black text-blue-600 outline-none text-center">
                     <div id="finalVal" class="p-4 bg-blue-600 rounded-2xl text-white font-black flex items-center justify-center italic">₹0</div>
                 </div>
-                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl border font-bold text-center">
-                    <option value="Full">Full Paid</option>
-                    <option value="EMI">EMI / Pending</option>
+                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
+                    <option value="Full">Full Payment</option>
+                    <option value="EMI">EMI / Finance</option>
                 </select>
+
                 <div id="emiSection" class="hidden space-y-4 p-5 bg-blue-50/50 rounded-[30px] border border-blue-100">
                     <input id="downPay" type="number" onkeyup="reCalc()" placeholder="Down Payment" class="w-full p-4 bg-white rounded-2xl border font-black text-center text-blue-600">
-                    <input id="emiMonths" type="number" onkeyup="reCalc()" placeholder="Months" class="w-full p-4 bg-white rounded-2xl border font-bold text-center">
+                    <input id="emiMonths" type="number" onkeyup="reCalc()" placeholder="Tenure (Months)" class="w-full p-4 bg-white rounded-2xl border font-bold text-center">
+                    <div class="flex justify-between items-center px-4 py-2 bg-white rounded-2xl text-red-500 font-black">
+                        <span class="text-[10px]">AUTO EMI:</span>
+                        <span id="mEmi">₹0</span>
+                    </div>
                 </div>
             </div>
-            <button onclick="generateBill()" class="w-full bg-blue-600 text-white py-6 rounded-[30px] font-black text-xl shadow-2xl active:scale-95 transition">PRINT PDF BILL</button>
+            <button onclick="generateBill()" class="w-full bg-slate-900 text-white py-6 rounded-[30px] font-black text-xl shadow-2xl active:scale-95 transition">GENERATE PROFESSIONAL PDF</button>
         </div>
 
-        <div id="ledgerPage" class="hidden p-4 space-y-6">
-            <div class="flex gap-2 bg-slate-200 p-2 rounded-3xl">
-                <button id="btnDue" onclick="filterHistory('due')" class="flex-1 py-3 rounded-2xl font-black text-[10px] uppercase bg-white shadow-md">Due Payments</button>
-                <button id="btnFull" onclick="filterHistory('full')" class="flex-1 py-3 rounded-2xl font-black text-[10px] uppercase text-slate-500">Full Paid</button>
+        <div id="ledgerPage" class="hidden p-4 space-y-4 pb-40">
+            <div class="bg-white p-3 rounded-[25px] shadow-sm sticky top-28 z-40 border">
+                <input id="searchBox" onkeyup="searchLedger()" placeholder="🔍 Search Name or Number..." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
             </div>
             <div id="billHistory" class="space-y-4"></div>
         </div>
@@ -83,7 +79,7 @@
         <div id="qrcode" class="hidden"></div>
 
         <nav class="fixed bottom-8 left-8 right-8 h-20 bg-slate-900/95 backdrop-blur-md rounded-[45px] flex items-center justify-around px-8 shadow-2xl z-[500]">
-            <button onclick="tab('billing')" class="text-white text-[10px] font-black uppercase tracking-widest">Billing</button>
+            <button onclick="tab('billing')" class="text-white text-[10px] font-black uppercase tracking-widest">New Bill</button>
             <button onclick="tab('ledger')" class="text-slate-500 text-[10px] font-black uppercase tracking-widest">History</button>
         </nav>
     </div>
@@ -101,19 +97,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let shop = null, shopId = null, allBills = [], currentView = 'due';
+        let shop = null, shopId = null, allBills = [];
 
-        // PWA Install Logic
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBar').classList.remove('hidden'); });
-        window.triggerInstall = async () => { if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installBar').classList.add('hidden'); } };
-
-        // Live Time
-        setInterval(() => {
+        function updateTime() {
             const now = new Date();
             document.getElementById('liveDate').innerText = now.toLocaleDateString('en-GB');
-            document.getElementById('liveTime').innerText = now.toLocaleTimeString('en-GB', {hour12:true});
-        }, 1000);
+            document.getElementById('liveTime').innerText = now.toLocaleTimeString('en-GB', { hour12: true });
+        }
+        setInterval(updateTime, 1000);
 
         window.doLogin = () => {
             const u = document.getElementById('uId').value.toLowerCase().trim();
@@ -124,7 +115,7 @@
                     shop = d.config; shopId = u;
                     localStorage.setItem('saved_u', u);
                     startApp();
-                } else alert("Access Denied!");
+                } else alert("Invalid Login!");
             }, {onlyOnce: true});
         };
 
@@ -134,13 +125,21 @@
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('headerShop').innerText = shop.name;
-            if(shop.logo) document.getElementById('sideLogo').src = shop.logo, document.getElementById('sideLogo').classList.remove('hidden');
+            if(shop.logo) {
+                document.getElementById('sideLogo').src = shop.logo;
+                document.getElementById('sideLogo').classList.remove('hidden');
+            }
             loadLedger();
         }
 
         window.reCalc = () => {
             const p = parseFloat(document.getElementById('totalP').value || 0);
             document.getElementById('finalVal').innerText = "₹" + p;
+            if(document.getElementById('payMode').value === "EMI") {
+                const dp = parseFloat(document.getElementById('downPay').value || 0);
+                const m = parseFloat(document.getElementById('emiMonths').value || 1);
+                document.getElementById('mEmi').innerText = "₹" + Math.round((p - dp) / m);
+            }
         };
 
         window.toggleEMI = () => document.getElementById('emiSection').classList.toggle('hidden', document.getElementById('payMode').value !== 'EMI');
@@ -156,7 +155,6 @@
                 months: document.getElementById('emiMonths').value || 0,
                 date: now.toLocaleDateString(), time: now.toLocaleTimeString(), timestamp: Date.now()
             };
-            if(!b.name || !b.total) return alert("All fields are mandatory!");
             push(ref(db, `data/${shopId}/bills`), b).then(() => createPDF(b));
         };
 
@@ -165,104 +163,108 @@
             const doc = new jsPDF();
             const bal = b.total - b.paid;
 
-            // Universal Header (Deep Blue)
+            // Header Background Navy Blue
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 45, 'F');
-            if(shop.logo) { try { const img = new Image(); img.src = shop.logo; img.crossOrigin = "Anonymous"; await new Promise(r => img.onload = r); doc.addImage(img, 'PNG', 165, 8, 28, 28); } catch(e) {} }
-            
-            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
-            doc.text(shop.name.toUpperCase(), 15, 20);
-            doc.setFontSize(10); doc.setFont("helvetica", "normal");
-            doc.text(`${shop.addr}`, 15, 28);
-            doc.text(`Contact: ${shop.phone1} | GST: ${shop.gst}`, 15, 34);
-            doc.setFontSize(8); doc.text(`Bill Date: ${b.date} | Time: ${b.time}`, 15, 40);
 
-            // Watermark & Badges
-            doc.saveGraphicsState(); doc.setGState(new doc.GState({opacity: 0.08})); doc.setFontSize(60); doc.setTextColor(150);
-            doc.text(shop.name, 105, 150, { align: "center", angle: 45 }); doc.restoreGraphicsState();
+            // Logo Fix (Top Left)
+            if(shop.logo) {
+                try {
+                    const img = new Image(); img.src = shop.logo; img.crossOrigin = "Anonymous";
+                    await new Promise(r => img.onload = r);
+                    doc.addImage(img, 'PNG', 15, 8, 28, 28);
+                } catch(e) {}
+            }
+
+            // Shop Info (White & Bold)
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.text(shop.name.toUpperCase(), 45, 18);
+            doc.setFontSize(9); doc.text(shop.slogan, 45, 24);
+            doc.text(`${shop.addr} | GST: ${shop.gst}`, 45, 30);
+            doc.setFontSize(8); doc.text(`Date: ${b.date} | Time: ${b.time}`, 45, 36);
+
+            // Watermark Diagonal
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({opacity: 0.08}));
+            doc.setFontSize(60); doc.setTextColor(150);
+            doc.text(shop.name, 105, 150, { align: "center", angle: 45 });
+            doc.restoreGraphicsState();
+
+            // Status Badge Red/Green
             doc.setFillColor(bal > 0 ? 220 : 34, bal > 0 ? 38 : 197, bal > 0 ? 38 : 94);
-            doc.roundedRect(150, 50, 45, 12, 3, 3, 'F'); doc.setTextColor(255, 255, 255); doc.setFontSize(9);
+            doc.roundedRect(150, 50, 45, 12, 3, 3, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(9);
             doc.text(bal > 0 ? "EMI PENDING" : "PAID FULL", 172.5, 57.5, { align: "center" });
 
-            // Tables
-            doc.autoTable({ startY: 70, head: [['CUSTOMER INFO', 'DEVICE INFO']], body: [[`Name: ${b.name}\nPhone: ${b.phone}\nAddr: ${b.addr}`, `Brand: ${b.brand}\nModel: ${b.model}\nIMEI: ${b.imei}`]], theme: 'grid', styles: {fontSize: 9}, headStyles: {fillColor:[51, 65, 85]} });
-            doc.autoTable({ startY: doc.lastAutoTable.finalY+10, head: [['SUMMARY', 'AMOUNT']], body: [['Total Device Value', 'Rs. '+b.total], ['Amount Received', 'Rs. '+b.paid], ['Pending Balance', 'Rs. '+bal]], theme: 'striped', headStyles: {fillColor:[15, 23, 42]} });
+            doc.autoTable({
+                startY: 70, head: [['CUSTOMER INFO', 'DEVICE INFO']],
+                body: [[`Name: ${b.name}\nPhone: ${b.phone}\nAddress: ${b.addr}`, `Brand: ${b.brand}\nModel: ${b.model}\nIMEI: ${b.imei}`]],
+                theme: 'grid', styles: { fontSize: 9, cellPadding: 5 }, headStyles: { fillColor: [51, 65, 85] }
+            });
 
-            // Footer & QR
-            const fY = doc.lastAutoTable.finalY + 35;
-            doc.setTextColor(15,23,42); doc.text("_______________________", 25, fY); doc.text("Customer Sign", 25, fY+5);
-            doc.text("_______________________", 140, fY); doc.text("Authorized Sign", 140, fY+5);
-            
+            doc.autoTable({
+                startY: doc.lastAutoTable.finalY + 8, head: [['SUMMARY', 'AMOUNT (INR)']],
+                body: [['Total Price', 'Rs. '+b.total], ['Down Payment', 'Rs. '+b.paid], ['Balance Due', 'Rs. '+bal], ['Tenure', b.months+' Months']],
+                theme: 'striped', headStyles: { fillColor: [15, 23, 42] }
+            });
+
+            const fY = doc.lastAutoTable.finalY + 30;
+            doc.setTextColor(15, 23, 42); doc.text("_______________________", 20, fY); doc.text("Customer Sign", 20, fY+5);
+            doc.text("_______________________", 140, fY); doc.text("Owner Sign", 140, fY+5);
+
+            // Instagram QR Scanner
             const igUrl = `https://instagram.com/${shop.insta}`;
             const qrDiv = document.getElementById('qrcode'); qrDiv.innerHTML = "";
             new QRCode(qrDiv, { text: igUrl, width: 100, height: 100 });
             
             setTimeout(() => {
                 const qrImg = qrDiv.querySelector('img').src;
-                doc.addImage(qrImg, 'PNG', 90, fY+10, 30, 30);
-                doc.setFontSize(9); doc.text(shop.slogan, 105, fY+45, {align:"center"});
+                doc.addImage(qrImg, 'PNG', 90, fY+15, 28, 28);
+                doc.setFontSize(8); doc.text(`Follow @${shop.insta} on Instagram`, 105, fY+48, { align: "center" });
                 
-                // 🔥 UNIVERSAL iOS / ANDROID DOWNLOAD FIX
+                // UNIVERSAL DOWNLOAD FIX
                 const pdfBlob = doc.output('blob');
-                const blobURL = URL.createObjectURL(pdfBlob);
+                const url = URL.createObjectURL(pdfBlob);
                 const link = document.createElement('a');
-                link.href = blobURL;
-                link.download = `${b.name}_Bill.pdf`;
-                document.body.appendChild(link);
+                link.href = url;
+                link.download = `${b.name}_Invoice.pdf`;
                 link.click();
-                setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(blobURL); }, 100);
             }, 800);
         }
 
         window.loadLedger = () => {
             onValue(ref(db, `data/${shopId}/bills`), (snap) => {
-                allBills = []; snap.forEach(c => allBills.push({id: c.key, ...c.val()}));
-                renderLedger();
+                allBills = [];
+                snap.forEach(c => allBills.push({id: c.key, ...c.val()}));
+                renderLedger(allBills);
             });
         };
 
-        window.filterHistory = (type) => {
-            currentView = type;
-            document.getElementById('btnDue').classList.toggle('bg-white', type === 'due');
-            document.getElementById('btnDue').classList.toggle('shadow-md', type === 'due');
-            document.getElementById('btnDue').classList.toggle('text-slate-500', type !== 'due');
-            document.getElementById('btnFull').classList.toggle('bg-white', type === 'full');
-            document.getElementById('btnFull').classList.toggle('shadow-md', type === 'full');
-            document.getElementById('btnFull').classList.toggle('text-slate-500', type !== 'full');
-            renderLedger();
-        };
-
-        function renderLedger() {
+        function renderLedger(data) {
             const list = document.getElementById('billHistory'); list.innerHTML = "";
-            const filtered = allBills.filter(b => {
+            data.slice().reverse().forEach(b => {
                 const bal = b.total - b.paid;
-                return currentView === 'due' ? bal > 0 : bal <= 0;
-            }).reverse();
-
-            filtered.forEach(b => {
-                const bal = b.total - b.paid;
-                list.innerHTML += `<div class="bg-white p-5 rounded-[30px] border shadow-sm flex justify-between items-center animate-fadeIn">
-                    <div onclick='viewPDF(${JSON.stringify(b)})'>
-                        <p class="font-black text-sm uppercase">${b.name}</p>
-                        <p class="text-[10px] font-bold ${bal > 0 ? 'text-red-500' : 'text-green-600'} italic uppercase">${bal > 0 ? 'Pending: ₹'+bal : 'Payment Complete'}</p>
-                        <p class="text-[8px] text-slate-400 font-bold">${b.date}</p>
-                    </div>
+                list.innerHTML += `<div class="bg-white p-5 rounded-[30px] border shadow-sm flex justify-between items-center">
+                    <div><p class="font-black text-sm uppercase">${b.name}</p><p class="text-[10px] font-bold text-slate-400 italic">${b.brand} | ₹${bal}</p></div>
                     <div class="flex gap-2">
                         <button onclick="window.open('tel:${b.phone}')" class="p-4 bg-blue-50 text-blue-600 rounded-2xl">📞</button>
-                        ${bal > 0 ? `<button onclick="updatePayment('${b.id}', ${b.paid}, ${b.total}, '${b.phone}')" class="p-4 bg-slate-900 text-white rounded-2xl font-black">₹</button>` : `<button class="p-4 bg-green-50 text-green-600 rounded-2xl">✅</button>`}
+                        <button onclick="updatePayment('${b.id}', ${b.paid}, ${b.total}, '${b.phone}')" class="p-4 bg-slate-900 text-white rounded-2xl font-black italic">₹</button>
                     </div>
                 </div>`;
             });
         }
 
-        window.viewPDF = (b) => createPDF(b);
+        window.searchLedger = () => {
+            const q = document.getElementById('searchBox').value.toLowerCase();
+            const res = allBills.filter(b => b.name.toLowerCase().includes(q) || b.phone.includes(q));
+            renderLedger(res);
+        };
 
         window.updatePayment = (id, oldP, total, phone) => {
-            const amt = prompt("Amount received now?");
-            if(amt && !isNaN(amt)) {
+            const amt = prompt("Received Amount?");
+            if(amt) {
                 const nP = parseFloat(oldP) + parseFloat(amt);
-                if(nP > total) return alert("Amount cannot exceed total price!");
                 update(ref(db, `data/${shopId}/bills/${id}`), { paid: nP }).then(() => {
-                    window.open(`https://wa.me/91${phone}?text=Payment of ₹${amt} received. Balance: ₹${total - nP}`);
+                    alert("Payment Updated!");
+                    window.open(`https://wa.me/91${phone}?text=Received ₹${amt}. Balance: ₹${total - nP}`);
                 });
             }
         };
@@ -273,6 +275,7 @@
         };
 
         window.onload = () => {
+            updateTime();
             const s = localStorage.getItem('saved_u');
             if(s) onValue(ref(db, `shops/${s}`), (snap) => { shop = snap.val().config; shopId = s; startApp(); }, {onlyOnce: true});
         };
