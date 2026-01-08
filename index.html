@@ -24,8 +24,8 @@
         <header class="bg-white p-6 shadow-sm sticky top-0 z-50 pt-10 border-b">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-4">
-                    <img id="sideLogo" src="" class="w-10 h-10 rounded-xl object-contain border hidden">
-                    <h1 id="headerShop" class="text-lg font-black uppercase italic tracking-tighter"></h1>
+                    <img id="sideLogo" src="" class="w-10 h-10 rounded-xl object-contain border hidden shadow-sm">
+                    <h1 id="headerShop" class="text-lg font-black uppercase italic tracking-tighter text-slate-800"></h1>
                 </div>
                 <button onclick="doLogout()" class="bg-red-50 text-red-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase">Logout</button>
             </div>
@@ -37,41 +37,34 @@
 
         <div id="billingPage" class="p-4 space-y-6 pb-40">
             <div class="bg-white p-6 rounded-[35px] border shadow-sm space-y-4">
-                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic underline decoration-blue-500 underline-offset-4">Customer Details</h3>
-                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
                 <input id="cP" type="number" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                <input id="cA" placeholder="Full Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-                
-                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic">Device Details (Manual)</h3>
-                <input id="dBrand" placeholder="Enter Brand (e.g. Vivo)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold uppercase">
-                <input id="dModel" placeholder="Enter Model (e.g. V29)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
-                <input id="imei" placeholder="IMEI / Serial No." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
-
-                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 italic tracking-widest">EMI Calculator</h3>
+                <input id="cA" placeholder="Customer Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
                 <div class="grid grid-cols-2 gap-3">
-                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Total Price" class="p-4 bg-slate-50 rounded-2xl border font-black text-blue-600 outline-none text-center">
-                    <div id="finalVal" class="p-4 bg-blue-600 rounded-2xl text-white font-black flex items-center justify-center italic">₹0</div>
+                    <input id="dBrand" placeholder="Brand Name" class="p-4 bg-slate-50 rounded-2xl border font-bold uppercase">
+                    <input id="dModel" placeholder="Model Name" class="p-4 bg-slate-50 rounded-2xl border font-bold uppercase">
                 </div>
-                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
-                    <option value="Full">Full Payment</option>
-                    <option value="EMI">EMI / Finance</option>
+                <input id="imei" placeholder="IMEI / Serial No." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold tracking-widest">
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Total Price" class="p-4 bg-slate-50 rounded-2xl border font-black text-blue-600 text-center text-xl">
+                    <div id="finalVal" class="p-4 bg-blue-600 rounded-2xl text-white font-black flex items-center justify-center italic shadow-inner">₹0</div>
+                </div>
+                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl border font-bold text-center">
+                    <option value="Full">Full Paid</option>
+                    <option value="EMI">EMI / Pending</option>
                 </select>
-
                 <div id="emiSection" class="hidden space-y-4 p-5 bg-blue-50/50 rounded-[30px] border border-blue-100">
                     <input id="downPay" type="number" onkeyup="reCalc()" placeholder="Down Payment" class="w-full p-4 bg-white rounded-2xl border font-black text-center text-blue-600">
-                    <input id="emiMonths" type="number" onkeyup="reCalc()" placeholder="Tenure (Months)" class="w-full p-4 bg-white rounded-2xl border font-bold text-center">
-                    <div class="flex justify-between items-center px-4 py-2 bg-white rounded-2xl text-red-500 font-black">
-                        <span class="text-[10px]">AUTO EMI:</span>
-                        <span id="mEmi">₹0</span>
-                    </div>
+                    <input id="emiMonths" type="number" onkeyup="reCalc()" placeholder="Months" class="w-full p-4 bg-white rounded-2xl border font-bold text-center">
+                    <div class="flex justify-between items-center px-4 py-2 text-blue-700 font-black"><span class="text-[10px]">MONTHLY EMI:</span><span id="mEmi">₹0</span></div>
                 </div>
             </div>
-            <button onclick="generateBill()" class="w-full bg-slate-900 text-white py-6 rounded-[30px] font-black text-xl shadow-2xl active:scale-95 transition">GENERATE PROFESSIONAL PDF</button>
+            <button onclick="generateBill()" class="w-full bg-slate-900 text-white py-6 rounded-[30px] font-black text-xl shadow-2xl active:scale-95 transition">GENERATE & DOWNLOAD BILL</button>
         </div>
 
         <div id="ledgerPage" class="hidden p-4 space-y-4 pb-40">
             <div class="bg-white p-3 rounded-[25px] shadow-sm sticky top-28 z-40 border">
-                <input id="searchBox" onkeyup="searchLedger()" placeholder="🔍 Search Name or Number..." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
+                <input id="searchBox" onkeyup="searchLedger()" placeholder="🔍 Search Customer..." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
             </div>
             <div id="billHistory" class="space-y-4"></div>
         </div>
@@ -99,12 +92,12 @@
 
         let shop = null, shopId = null, allBills = [];
 
-        function updateTime() {
+        // LIVE CLOCK
+        setInterval(() => {
             const now = new Date();
             document.getElementById('liveDate').innerText = now.toLocaleDateString('en-GB');
             document.getElementById('liveTime').innerText = now.toLocaleTimeString('en-GB', { hour12: true });
-        }
-        setInterval(updateTime, 1000);
+        }, 1000);
 
         window.doLogin = () => {
             const u = document.getElementById('uId').value.toLowerCase().trim();
@@ -125,11 +118,8 @@
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('headerShop').innerText = shop.name;
-            if(shop.logo) {
-                document.getElementById('sideLogo').src = shop.logo;
-                document.getElementById('sideLogo').classList.remove('hidden');
-            }
-            loadLedger();
+            if(shop.logo) { document.getElementById('sideLogo').src = shop.logo; document.getElementById('sideLogo').classList.remove('hidden'); }
+            loadLedger(); // Real-time listener start
         }
 
         window.reCalc = () => {
@@ -155,6 +145,7 @@
                 months: document.getElementById('emiMonths').value || 0,
                 date: now.toLocaleDateString(), time: now.toLocaleTimeString(), timestamp: Date.now()
             };
+            if(!b.name || !b.total) return alert("Fill Name & Price!");
             push(ref(db, `data/${shopId}/bills`), b).then(() => createPDF(b));
         };
 
@@ -163,10 +154,7 @@
             const doc = new jsPDF();
             const bal = b.total - b.paid;
 
-            // Header Background Navy Blue
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 45, 'F');
-
-            // Logo Fix (Top Left)
             if(shop.logo) {
                 try {
                     const img = new Image(); img.src = shop.logo; img.crossOrigin = "Anonymous";
@@ -174,63 +162,44 @@
                     doc.addImage(img, 'PNG', 15, 8, 28, 28);
                 } catch(e) {}
             }
-
-            // Shop Info (White & Bold)
             doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.text(shop.name.toUpperCase(), 45, 18);
-            doc.setFontSize(9); doc.text(shop.slogan, 45, 24);
-            doc.text(`${shop.addr} | GST: ${shop.gst}`, 45, 30);
             doc.setFontSize(8); doc.text(`Date: ${b.date} | Time: ${b.time}`, 45, 36);
 
-            // Watermark Diagonal
-            doc.saveGraphicsState();
-            doc.setGState(new doc.GState({opacity: 0.08}));
-            doc.setFontSize(60); doc.setTextColor(150);
-            doc.text(shop.name, 105, 150, { align: "center", angle: 45 });
-            doc.restoreGraphicsState();
-
-            // Status Badge Red/Green
-            doc.setFillColor(bal > 0 ? 220 : 34, bal > 0 ? 38 : 197, bal > 0 ? 38 : 94);
-            doc.roundedRect(150, 50, 45, 12, 3, 3, 'F');
-            doc.setTextColor(255, 255, 255); doc.setFontSize(9);
-            doc.text(bal > 0 ? "EMI PENDING" : "PAID FULL", 172.5, 57.5, { align: "center" });
-
             doc.autoTable({
-                startY: 70, head: [['CUSTOMER INFO', 'DEVICE INFO']],
-                body: [[`Name: ${b.name}\nPhone: ${b.phone}\nAddress: ${b.addr}`, `Brand: ${b.brand}\nModel: ${b.model}\nIMEI: ${b.imei}`]],
-                theme: 'grid', styles: { fontSize: 9, cellPadding: 5 }, headStyles: { fillColor: [51, 65, 85] }
+                startY: 65, head: [['CUSTOMER', 'PRODUCT']],
+                body: [[`${b.name}\n${b.phone}`, `${b.brand} ${b.model}\n${b.imei}`]],
+                theme: 'grid'
             });
 
             doc.autoTable({
-                startY: doc.lastAutoTable.finalY + 8, head: [['SUMMARY', 'AMOUNT (INR)']],
-                body: [['Total Price', 'Rs. '+b.total], ['Down Payment', 'Rs. '+b.paid], ['Balance Due', 'Rs. '+bal], ['Tenure', b.months+' Months']],
+                startY: doc.lastAutoTable.finalY + 10, head: [['SUMMARY', 'AMOUNT']],
+                body: [['Total', 'Rs. '+b.total], ['Paid', 'Rs. '+b.paid], ['Balance', 'Rs. '+bal]],
                 theme: 'striped', headStyles: { fillColor: [15, 23, 42] }
             });
 
-            const fY = doc.lastAutoTable.finalY + 30;
-            doc.setTextColor(15, 23, 42); doc.text("_______________________", 20, fY); doc.text("Customer Sign", 20, fY+5);
-            doc.text("_______________________", 140, fY); doc.text("Owner Sign", 140, fY+5);
-
-            // Instagram QR Scanner
             const igUrl = `https://instagram.com/${shop.insta}`;
             const qrDiv = document.getElementById('qrcode'); qrDiv.innerHTML = "";
             new QRCode(qrDiv, { text: igUrl, width: 100, height: 100 });
             
             setTimeout(() => {
                 const qrImg = qrDiv.querySelector('img').src;
-                doc.addImage(qrImg, 'PNG', 90, fY+15, 28, 28);
-                doc.setFontSize(8); doc.text(`Follow @${shop.insta} on Instagram`, 105, fY+48, { align: "center" });
+                doc.addImage(qrImg, 'PNG', 90, 250, 30, 30);
                 
-                // UNIVERSAL DOWNLOAD FIX
+                // 🔥 THE DOWNLOAD FIX: BLOB FORCED DOWNLOAD
                 const pdfBlob = doc.output('blob');
                 const url = URL.createObjectURL(pdfBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `${b.name}_Invoice.pdf`;
+                link.setAttribute('download', `${b.name}_Bill.pdf`);
+                document.body.appendChild(link);
                 link.click();
+                document.body.removeChild(link);
+                window.open(`https://wa.me/91${b.phone}?text=Bill from *${shop.name}* ready!`);
             }, 800);
         }
 
         window.loadLedger = () => {
+            // 🔥 REAL-TIME LISTENER: No cache issue
             onValue(ref(db, `data/${shopId}/bills`), (snap) => {
                 allBills = [];
                 snap.forEach(c => allBills.push({id: c.key, ...c.val()}));
@@ -242,7 +211,7 @@
             const list = document.getElementById('billHistory'); list.innerHTML = "";
             data.slice().reverse().forEach(b => {
                 const bal = b.total - b.paid;
-                list.innerHTML += `<div class="bg-white p-5 rounded-[30px] border shadow-sm flex justify-between items-center">
+                list.innerHTML += `<div class="bg-white p-5 rounded-[30px] border flex justify-between items-center shadow-sm">
                     <div><p class="font-black text-sm uppercase">${b.name}</p><p class="text-[10px] font-bold text-slate-400 italic">${b.brand} | ₹${bal}</p></div>
                     <div class="flex gap-2">
                         <button onclick="window.open('tel:${b.phone}')" class="p-4 bg-blue-50 text-blue-600 rounded-2xl">📞</button>
@@ -254,8 +223,7 @@
 
         window.searchLedger = () => {
             const q = document.getElementById('searchBox').value.toLowerCase();
-            const res = allBills.filter(b => b.name.toLowerCase().includes(q) || b.phone.includes(q));
-            renderLedger(res);
+            renderLedger(allBills.filter(b => b.name.toLowerCase().includes(q) || b.phone.includes(q)));
         };
 
         window.updatePayment = (id, oldP, total, phone) => {
@@ -263,7 +231,6 @@
             if(amt) {
                 const nP = parseFloat(oldP) + parseFloat(amt);
                 update(ref(db, `data/${shopId}/bills/${id}`), { paid: nP }).then(() => {
-                    alert("Payment Updated!");
                     window.open(`https://wa.me/91${phone}?text=Received ₹${amt}. Balance: ₹${total - nP}`);
                 });
             }
@@ -275,7 +242,6 @@
         };
 
         window.onload = () => {
-            updateTime();
             const s = localStorage.getItem('saved_u');
             if(s) onValue(ref(db, `shops/${s}`), (snap) => { shop = snap.val().config; shopId = s; startApp(); }, {onlyOnce: true});
         };
