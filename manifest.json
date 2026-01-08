@@ -1,0 +1,15 @@
+{
+  "name": "Cloud Billing Tushar Dev",
+  "short_name": "BillingApp",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/11631/11631742.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
