@@ -2,82 +2,91 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Premium Cloud Billing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.json">
+    <title>Cloud Billing | Tushar Dev</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
-<body class="bg-slate-50 font-sans">
+<body class="bg-slate-50 font-sans select-none overflow-x-hidden">
 
-    <div id="loginPage" class="fixed inset-0 z-[2000] bg-white flex items-center justify-center p-8">
-        <div class="w-full max-w-sm text-center">
-            <h1 class="text-4xl font-black mb-10 tracking-tighter italic text-slate-900 underline decoration-blue-500">CLOUD BILLING</h1>
-            <input id="uId" placeholder="Shop ID" class="w-full p-5 mb-4 bg-slate-100 rounded-3xl outline-none font-bold">
-            <input id="uPass" type="password" placeholder="Password" class="w-full p-5 mb-10 bg-slate-100 rounded-3xl outline-none font-bold">
-            <button onclick="doLogin()" class="w-full bg-slate-900 text-white py-5 rounded-3xl font-black text-lg shadow-2xl">SIGN IN</button>
+    <div id="installPopup" class="hidden fixed bottom-28 left-6 right-6 bg-slate-900 text-white p-6 rounded-[30px] z-[5000] shadow-2xl flex flex-col items-center">
+        <p class="font-bold text-center mb-4 italic">Install App for Professional Use 🚀</p>
+        <button id="btnInstall" class="bg-blue-600 px-12 py-4 rounded-2xl font-black uppercase text-sm">INSTALL NOW</button>
+    </div>
+
+    <div id="loginPage" class="fixed inset-0 z-[2000] bg-white flex items-center justify-center p-8 text-center">
+        <div class="w-full max-w-sm">
+            <img id="loginLogo" src="" class="w-24 h-24 mx-auto mb-6 rounded-3xl object-contain bg-slate-100 p-2 hidden">
+            <h1 class="text-4xl font-black mb-10 italic">CLOUD BILLING</h1>
+            <input id="uId" placeholder="Shop ID" class="w-full p-5 mb-4 bg-slate-50 rounded-[25px] border outline-none font-bold">
+            <input id="uPass" type="password" placeholder="Password" class="w-full p-5 mb-10 bg-slate-50 rounded-[25px] border outline-none font-bold">
+            <button onclick="doLogin()" class="w-full bg-slate-900 text-white py-5 rounded-[25px] font-black shadow-xl">SIGN IN</button>
         </div>
     </div>
 
-    <div id="mainApp" class="hidden">
-        <header class="bg-white p-6 shadow-sm flex justify-between items-center sticky top-0 z-50">
+    <div id="mainApp" class="hidden min-h-screen">
+        <header class="bg-white/80 backdrop-blur-md p-6 shadow-sm flex justify-between items-center sticky top-0 z-50 pt-12 border-b">
             <div class="flex items-center gap-4">
-                <img id="sideLogo" class="w-10 h-10 rounded-xl object-contain bg-slate-100">
+                <img id="sideLogo" src="" class="w-10 h-10 rounded-xl object-contain hidden border">
                 <h1 id="headerShop" class="text-lg font-black text-slate-800 uppercase italic"></h1>
             </div>
-            <button onclick="location.reload()" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-bold">LOGOUT</button>
+            <button onclick="location.reload()" class="bg-red-50 text-red-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase">Logout</button>
         </header>
 
-        <div id="billingPage" class="p-4 space-y-6 pb-24">
-            <div class="bg-white p-6 rounded-[35px] border space-y-4 shadow-sm">
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Customer Info</h3>
-                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl outline-none">
-                <input id="cP" type="number" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 rounded-2xl outline-none">
+        <div id="billingPage" class="p-4 space-y-6 pb-40">
+            <div class="bg-white p-6 rounded-[35px] border shadow-sm space-y-4">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Customer Details</h3>
+                <input id="cN" placeholder="Customer Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                <input id="cP" type="number" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                <input id="cA" placeholder="Customer Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
                 
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Device Info</h3>
-                <select id="brand" class="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Device Details</h3>
+                <select id="brand" onchange="checkManual()" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
                     <option value="iPhone">iPhone</option><option value="Samsung">Samsung</option>
                     <option value="Oppo">Oppo</option><option value="Realme">Realme</option>
-                    <option value="Redmi">Redmi</option><option value="Motorola">Motorola</option>
+                    <option value="MANUAL">-- ADD MANUAL DEVICE --</option>
                 </select>
-                <input id="imei" placeholder="IMEI Number" class="w-full p-4 bg-slate-50 rounded-2xl outline-none">
-                
-                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Payment Details</h3>
-                <div class="grid grid-cols-2 gap-3">
-                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Total Price" class="p-4 bg-slate-50 rounded-2xl font-black text-blue-600 outline-none">
-                    <div class="p-4 bg-blue-50 rounded-2xl text-center"><p class="text-[8px] font-bold text-blue-400">FINAL</p><p id="finalVal" class="text-lg font-black text-blue-700">₹0</p></div>
+                <div id="manualInput" class="hidden space-y-3">
+                    <input id="mBrand" placeholder="Enter Brand Name" class="w-full p-4 bg-blue-50 rounded-xl border border-blue-200">
+                    <input id="mModel" placeholder="Enter Model Number" class="w-full p-4 bg-blue-50 rounded-xl border border-blue-200">
                 </div>
-                
-                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold">
+                <input id="imei" placeholder="IMEI / Serial No." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+
+                <h3 class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Payment Info</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="totalP" type="number" onkeyup="reCalc()" placeholder="Price" class="p-4 bg-slate-50 rounded-2xl border font-black text-blue-600 text-center">
+                    <div id="finalVal" class="p-4 bg-blue-600 rounded-2xl text-white font-black flex items-center justify-center">₹0</div>
+                </div>
+                <select id="payMode" onchange="toggleEMI()" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
                     <option value="Full">Full Payment</option>
-                    <option value="EMI">EMI / Finance</option>
+                    <option value="EMI">EMI / Pending / Finance</option>
                 </select>
 
                 <div id="emiSection" class="hidden space-y-4 p-5 bg-yellow-50 rounded-[30px] border border-yellow-100">
-                    <input id="downPay" type="number" onkeyup="reCalc()" placeholder="Down Payment" class="w-full p-4 bg-white rounded-2xl outline-none font-bold">
-                    <select id="emiMonths" onchange="reCalc()" class="w-full p-4 bg-white rounded-2xl outline-none font-bold">
-                        <option value="3">3 Months EMI</option>
-                        <option value="6">6 Months EMI</option>
-                        <option value="9">9 Months EMI</option>
-                        <option value="12">12 Months EMI</option>
-                    </select>
-                    <div class="flex justify-between items-center p-4 bg-white rounded-2xl">
-                        <p class="text-xs font-bold text-slate-400 uppercase">Per Month</p>
-                        <p id="mEmi" class="text-xl font-black text-red-500">₹0</p>
+                    <input id="downPay" type="number" onkeyup="reCalc()" placeholder="Down Payment" class="w-full p-4 bg-white rounded-2xl border font-black text-center">
+                    <input id="emiMonths" type="number" onkeyup="reCalc()" placeholder="Tenure (Months)" class="w-full p-4 bg-white rounded-2xl border font-bold text-center">
+                    <div class="flex justify-between items-center px-4 py-2 bg-white rounded-2xl text-red-500 font-black">
+                        <span class="text-[10px]">MONTHLY EMI:</span>
+                        <span id="mEmi">₹0</span>
                     </div>
                 </div>
             </div>
-            <button onclick="generateBill()" class="w-full bg-slate-900 text-white py-6 rounded-[30px] font-black text-lg shadow-2xl">SAVE & SEND PDF</button>
+            <button onclick="generateBill()" class="w-full bg-slate-900 text-white py-6 rounded-[30px] font-black text-lg shadow-2xl">GENERATE PREMIUM PDF</button>
         </div>
 
-        <div id="ledgerPage" class="hidden p-4 space-y-4 pb-24">
-            <h3 class="font-black text-slate-800 ml-2">PAYMENT LEDGER</h3>
+        <div id="ledgerPage" class="hidden p-4 space-y-4 pb-40">
+            <div class="bg-white p-3 rounded-[25px] shadow-sm sticky top-28 z-40 border">
+                <input id="searchBox" onkeyup="searchLedger()" placeholder="🔍 Search Name or Mobile..." class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold text-center">
+            </div>
             <div id="billHistory" class="space-y-4"></div>
         </div>
 
-        <nav class="fixed bottom-6 left-6 right-6 h-20 bg-slate-900 rounded-[35px] flex items-center justify-around px-8 shadow-2xl z-[100]">
+        <nav class="fixed bottom-8 left-8 right-8 h-20 bg-slate-900/95 backdrop-blur-md rounded-[40px] flex items-center justify-around px-8 shadow-2xl z-[500]">
             <button onclick="tab('billing')" class="text-white text-[10px] font-black uppercase tracking-widest">New Bill</button>
-            <button onclick="tab('ledger')" class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Ledger</button>
+            <button onclick="tab('ledger')" class="text-slate-500 text-[10px] font-black uppercase tracking-widest">History</button>
         </nav>
     </div>
 
@@ -94,7 +103,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        let shop = null, shopId = null;
+        let shop = null, shopId = null, allBills = [], deferredPrompt;
+
+        // PWA - Install Logic
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e;
+            document.getElementById('installPopup').classList.remove('hidden');
+        });
+        document.getElementById('btnInstall').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') document.getElementById('installPopup').classList.add('hidden');
+                deferredPrompt = null;
+            }
+        });
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
         window.doLogin = () => {
             const u = document.getElementById('uId').value.toLowerCase().trim();
@@ -105,7 +129,7 @@
                     shop = d.config; shopId = u;
                     localStorage.setItem('saved_u', u);
                     startApp();
-                } else alert("Incorect Login!");
+                } else alert("Incorrect Access!");
             }, {onlyOnce: true});
         };
 
@@ -113,17 +137,25 @@
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('headerShop').innerText = shop.name;
-            document.getElementById('sideLogo').src = shop.logo;
-            checkDueAlerts();
+            if(shop.logo) {
+                document.getElementById('sideLogo').src = shop.logo;
+                document.getElementById('sideLogo').classList.remove('hidden');
+                document.getElementById('loginLogo').src = shop.logo;
+                document.getElementById('loginLogo').classList.remove('hidden');
+            }
             loadLedger();
         }
+
+        window.checkManual = () => {
+            document.getElementById('manualInput').classList.toggle('hidden', document.getElementById('brand').value !== 'MANUAL');
+        };
 
         window.reCalc = () => {
             const p = parseFloat(document.getElementById('totalP').value || 0);
             document.getElementById('finalVal').innerText = "₹" + p;
             if(document.getElementById('payMode').value === "EMI") {
                 const dp = parseFloat(document.getElementById('downPay').value || 0);
-                const m = parseFloat(document.getElementById('emiMonths').value);
+                const m = parseFloat(document.getElementById('emiMonths').value || 1);
                 document.getElementById('mEmi').innerText = "₹" + Math.round((p - dp) / m);
             }
         };
@@ -133,97 +165,111 @@
         };
 
         window.generateBill = () => {
+            const dev = document.getElementById('brand').value === 'MANUAL' ? 
+                document.getElementById('mBrand').value + " " + document.getElementById('mModel').value : 
+                document.getElementById('brand').value;
+
             const b = {
                 name: document.getElementById('cN').value,
                 phone: document.getElementById('cP').value,
-                brand: document.getElementById('brand').value,
+                addr: document.getElementById('cA').value,
+                brand: dev,
                 imei: document.getElementById('imei').value,
                 total: parseFloat(document.getElementById('totalP').value),
                 paid: parseFloat(document.getElementById('downPay').value || document.getElementById('totalP').value),
-                months: document.getElementById('payMode').value === "EMI" ? document.getElementById('emiMonths').value : 0,
+                months: document.getElementById('emiMonths').value || 0,
                 date: new Date().toLocaleDateString(),
                 timestamp: Date.now()
             };
+
             push(ref(db, `data/${shopId}/bills`), b).then(() => {
                 createPDF(b);
-                const msg = `*${shop.name}*%0AHello ${b.name}, tumcha ₹${b.total} cha bill save jhale ahe.%0ADue Amount: ₹${b.total - b.paid}%0AVisit Again!`;
-                window.open(`https://wa.me/91${b.phone}?text=${msg}`);
+                window.open(`https://wa.me/91${b.phone}?text=*${shop.name}*%0AHello ${b.name}, your invoice for ${b.brand} is ready!%0ABalance: ₹${b.total - b.paid}.%0AThank You!`);
             });
         };
 
-        function createPDF(b) {
+        async function createPDF(b) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            if(shop.logo) doc.addImage(shop.logo, 'JPEG', 15, 15, 30, 30);
-            doc.setFontSize(22); doc.setTextColor(0, 50, 150); doc.text(shop.name, 50, 25);
-            doc.setFontSize(9); doc.setTextColor(100); doc.text(shop.slogan, 50, 30);
-            doc.text(`${shop.addr} | GST: ${shop.gst}`, 50, 35);
+            
+            // Header with Proxy Logo Fix
+            if(shop.logo) {
+                try {
+                    const img = new Image();
+                    img.src = shop.logo;
+                    img.crossOrigin = "Anonymous";
+                    doc.addImage(img, 'JPEG', 15, 12, 25, 25);
+                } catch(e) { console.log("Logo Error", e); }
+            }
+
+            doc.setFontSize(22); doc.setTextColor(15, 23, 42); doc.text(shop.name, 45, 22);
+            doc.setFontSize(9); doc.setTextColor(100); doc.text(shop.slogan, 45, 27);
+            doc.text(`${shop.addr} | GST: ${shop.gst}`, 45, 32);
 
             // Watermark
-            doc.setTextColor(245); doc.setFontSize(50);
+            doc.setTextColor(248); doc.setFontSize(60);
             doc.text(shop.name, 105, 150, { align: "center", angle: 45 });
 
-            // EMI Badge
             const bal = b.total - b.paid;
-            doc.setFillColor(bal > 0 ? 255 : 50, bal > 0 ? 230 : 200, bal > 0 ? 230 : 200);
-            doc.roundedRect(140, 45, 55, 12, 3, 3, 'F');
-            doc.setFontSize(10); doc.setTextColor(0);
-            doc.text(bal > 0 ? "EMI PENDING" : "PAID FULL", 167.5, 53, { align: "center" });
-
             doc.autoTable({
                 startY: 65,
-                head: [['Details', 'Info']],
-                body: [
-                    ['Customer', b.name], ['Mobile', b.phone], ['Device', b.brand],
-                    ['IMEI', b.imei], ['Total', 'Rs.'+b.total], ['Paid', 'Rs.'+b.paid],
-                    ['Balance', 'Rs.'+bal], ['EMI Tenure', b.months ? b.months+' Months' : 'N/A']
-                ],
-                theme: 'striped', headStyles: { fillColor: [0, 50, 150] }
+                head: [['CUSTOMER INFO', 'DEVICE INFO']],
+                body: [[`Name: ${b.name}\nPhone: ${b.phone}\nAddr: ${b.addr}`, `Device: ${b.brand}\nIMEI: ${b.imei}\nDate: ${b.date}`]],
+                theme: 'grid'
             });
 
-            doc.text("________________", 30, 240); doc.text("Customer Sign", 30, 245);
-            doc.text("________________", 150, 240); doc.text("Owner Sign", 150, 245);
+            doc.autoTable({
+                startY: doc.lastAutoTable.finalY + 5,
+                head: [['SUMMARY', 'AMOUNT']],
+                body: [['Total Price', 'Rs. '+b.total], ['Down Payment', 'Rs. '+b.paid], ['Balance Due', 'Rs. '+bal], ['Tenure', b.months+' Months']],
+                theme: 'striped', headStyles: { fillColor: [15, 23, 42] }
+            });
+
+            doc.text("________________", 30, 240); doc.text("Customer Signature", 30, 245);
+            doc.text("________________", 150, 240); doc.text("Owner Signature", 150, 245);
             doc.save(`${b.name}_Invoice.pdf`);
         }
 
         window.loadLedger = () => {
             onValue(ref(db, `data/${shopId}/bills`), (snap) => {
-                const list = document.getElementById('billHistory'); list.innerHTML = "";
-                snap.forEach(c => {
-                    const b = c.val();
-                    const bal = b.total - b.paid;
-                    list.innerHTML += `<div class="bg-white p-5 rounded-[30px] shadow-sm border border-slate-100 flex justify-between items-center">
-                        <div><p class="font-black text-slate-800 text-sm uppercase">${b.name}</p><p class="text-[10px] font-bold text-slate-400 italic">${b.brand} | Balance: ₹${bal}</p></div>
-                        <div class="flex gap-2">
-                            <button onclick="window.open('tel:${b.phone}')" class="p-3 bg-blue-50 text-blue-600 rounded-xl">📞</button>
-                            <button onclick="updatePayment('${c.key}', ${b.paid}, ${b.total}, '${b.phone}')" class="p-3 bg-green-50 text-green-600 rounded-xl">₹</button>
-                        </div>
-                    </div>`;
-                });
+                allBills = [];
+                snap.forEach(c => { allBills.push({id: c.key, ...c.val()}); });
+                renderLedger(allBills);
             });
         };
 
-        window.updatePayment = (id, oldPaid, total, phone) => {
-            const amt = prompt("Amount Received Now?");
+        function renderLedger(data) {
+            const list = document.getElementById('billHistory'); list.innerHTML = "";
+            data.reverse().forEach(b => {
+                const bal = b.total - b.paid;
+                list.innerHTML += `<div class="bg-white p-5 rounded-[30px] border flex justify-between items-center">
+                    <div>
+                        <p class="font-black text-slate-800 uppercase text-sm">${b.name}</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">${b.brand} | Bal: ₹${bal}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="window.open('https://wa.me/91${b.phone}')" class="p-4 bg-green-50 text-green-600 rounded-2xl font-black">WA</button>
+                        <button onclick="updatePayment('${b.id}', ${b.paid}, ${b.total}, '${b.phone}')" class="p-4 bg-blue-50 text-blue-600 rounded-2xl font-black">₹</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        window.searchLedger = () => {
+            const q = document.getElementById('searchBox').value.toLowerCase();
+            const res = allBills.filter(b => b.name.toLowerCase().includes(q) || b.phone.includes(q));
+            renderLedger(res);
+        };
+
+        window.updatePayment = (id, oldP, total, phone) => {
+            const amt = prompt("Received Amount?");
             if(amt) {
-                const newPaid = parseFloat(oldPaid) + parseFloat(amt);
-                update(ref(db, `data/${shopId}/bills/${id}`), { paid: newPaid }).then(() => {
-                    alert("Payment Updated!");
-                    window.open(`https://wa.me/91${phone}?text=Thank you! Your payment of ₹${amt} is received. Remaining: ₹${total - newPaid}`);
+                const nP = parseFloat(oldP) + parseFloat(amt);
+                update(ref(db, `data/${shopId}/bills/${id}`), { paid: nP }).then(() => {
+                    window.open(`https://wa.me/91${phone}?text=Thank you! ₹${amt} received. Pending: ₹${total - nP}`);
                 });
             }
         };
-
-        function checkDueAlerts() {
-            onValue(ref(db, `data/${shopId}/bills`), (snap) => {
-                snap.forEach(c => {
-                    const b = c.val();
-                    if((b.total - b.paid) > 0) {
-                        alert(`DUE ALERT: ${b.name} has pending balance of ₹${b.total - b.paid}. Call them now!`);
-                    }
-                });
-            }, {onlyOnce: true});
-        }
 
         window.tab = (t) => {
             document.getElementById('billingPage').classList.toggle('hidden', t !== 'billing');
